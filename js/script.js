@@ -94,16 +94,13 @@ function openPanel(item) {
 }
 
 /* ===================================================
-   TUTUP PANEL DETAIL (TERMASUK TUTUP POPUP)
+   TUTUP PANEL DETAIL (SINKRON TOTAL FADE OUT)
 =================================================== */
 document.getElementById("closePanel").onclick = function() {
     if (!panelOpen) return;
 
     panelOpen = false;
     document.getElementById("detailPanel").classList.remove("open");
-
-    // Menutup popup aktif yang sedang terbuka di peta
-    map.closePopup();
 
     if (currentItem) {
         const currentZoom = map.getZoom();
@@ -118,6 +115,21 @@ document.getElementById("closePanel").onclick = function() {
             finalLatLngClose = map.unproject(offsetPointClose, currentZoom);
         }
 
+        // SOLUSI: Tambahkan kelas khusus pada seluruh kontainer luar Leaflet agar memudar bersamaan
+        const entirePopup = document.querySelector(".custom-leaflet-popup");
+        if (entirePopup) {
+            entirePopup.classList.add("popup-closing-fade");
+        }
+
+        // 1. Bersihkan sisa event listener 'moveend' lama
+        map.off("moveend");
+
+        // 2. Setelah gerakan bergeser selesai, tutup popup sepenuhnya dari sistem Leaflet
+        map.once("moveend", function() {
+            map.closePopup(); 
+        });
+
+        // 3. Terbangkan peta kembali secara proporsional
         map.flyTo(finalLatLngClose, currentZoom, {
             duration: 0.5,
             easeLinearity: 0.25
@@ -163,6 +175,12 @@ data.forEach(item => {
     // Event saat mouse mendekati marker (Hover) -> Munculkan Popup
     marker.on("mouseover", function() {
         this.openPopup();
+        
+        // Pastikan kelas animasi penutupan dibersihkan saat popup dibuka kembali
+        const entirePopup = document.querySelector(".custom-leaflet-popup");
+        if (entirePopup) {
+            entirePopup.classList.remove("popup-closing-fade");
+        }
     });
 
     // Event saat mouse menjauh dari marker -> Tutup Popup
