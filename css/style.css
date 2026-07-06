@@ -27,7 +27,7 @@ body {
 }
 
 /* ===================================================
-   SIDEBAR & SEARCH (MURNI PERSENTASE & FLUID)
+   SIDEBAR & SEARCH (PERSENTASE & FLUID)
 =================================================== */
 #sidebar {
     width: 23vw;
@@ -93,7 +93,7 @@ body {
     gap: 1.5vh;
 }
 
-/* Custom Fluid Scrollbar */
+/* Custom Scrollbar */
 #list::-webkit-scrollbar, #detailContent::-webkit-scrollbar {
     width: 0.4vw;
 }
@@ -162,7 +162,7 @@ body {
 }
 
 /* ===================================================
-   DETAIL PANEL (RESPONSIVE & LOCK 50% ON MOBILE)
+   DETAIL PANEL (RESPONSIVE & FLUID SHAPE)
 =================================================== */
 #detailPanel {
     position: absolute;
@@ -316,7 +316,65 @@ body {
 }
 
 /* ===================================================
-   MEDIA QUERIES (AKURASI TOTAL HINGGA IPHONE SE)
+   GOOGLE MAPS STYLE POPUP OVERVIEW
+=================================================== */
+.custom-leaflet-popup .leaflet-popup-content-wrapper {
+    background: var(--surface);
+    color: var(--text-dark);
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.custom-leaflet-popup .leaflet-popup-content {
+    margin: 0;
+    width: 220px !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-img-inside {
+    width: 100%;
+    height: 90px;
+    overflow: hidden;
+}
+
+.popup-img-inside img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.popup-text-inside {
+    padding: 10px 12px;
+}
+
+.popup-text-inside h5 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.popup-text-inside p {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-leaflet-popup .leaflet-popup-tip {
+    background: var(--surface);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* ===================================================
+   MEDIA QUERIES (OPTIMAL DI MOBILE & IPHONE SE)
 =================================================== */
 @media (max-width: 768px) {
     body {
@@ -354,7 +412,7 @@ body {
     }
 
     .location {
-        width: 60vw; /* Aman di layar sekecil iPhone SE */
+        width: 60vw;
         padding: 1.5vh 4%;
         border-radius: 3vw;
         display: flex;
@@ -366,7 +424,7 @@ body {
         font-size: clamp(12px, 3.8vw, 15px);
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis; /* Menghentikan teks overflow ke bawah */
+        text-overflow: ellipsis;
     }
 
     .location p {
@@ -376,7 +434,7 @@ body {
         text-overflow: ellipsis;
     }
 
-    /* Panel Mengunci Setengah Layar HP (Anti-Full Screen) */
+    /* Bottom Sheet 50% Tinggi Layar HP */
     #detailPanel {
         width: 100%;
         height: 50vh; 

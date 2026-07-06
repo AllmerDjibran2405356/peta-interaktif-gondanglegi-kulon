@@ -56,23 +56,23 @@ function openPanel(item) {
     document.getElementById("dDesc").textContent = item.deskripsi;
     document.getElementById("dAddr").textContent = item.alamat;
     document.getElementById("dCoord").textContent = `${item.lat}, ${item.lng}`;
-    document.getElementById("dMaps").href = `https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}`;
+    document.getElementById("dMaps").href = `http://googleusercontent.com/maps.google.com/?q=${item.lat},${item.lng}`;
 
     const currentZoom = map.getZoom();
     let finalLatLng = [item.lat, item.lng];
 
-    // 2. Kalkulasi rasio pixel asli panel dari CSS berbasis % / viewport secara real-time
+    // 2. Kalkulasi dimensi pixel asli panel dari CSS secara real-time
     const panelDOM = document.getElementById("detailPanel");
     const dynamicWidth = panelDOM.offsetWidth;
     const dynamicHeight = panelDOM.offsetHeight;
 
     if (window.innerWidth > 768) {
-        // DESKTOP: Geser center peta ke kanan agar marker pas di tengah sisa peta yang kosong
+        // DESKTOP: Geser center peta ke kanan agar marker pas di tengah sisa area kosong
         const targetPoint = map.project([item.lat, item.lng], currentZoom);
         const offsetPoint = targetPoint.add([dynamicWidth / 2, 0]); 
         finalLatLng = map.unproject(offsetPoint, currentZoom);
     } else {
-        // MOBILE: Geser center peta ke bawah agar marker berada di sisa area peta atas (50vh)
+        // MOBILE: Geser center peta ke bawah agar marker berada di sisa area peta atas
         const targetPoint = map.project([item.lat, item.lng], currentZoom);
         const offsetPoint = targetPoint.add([0, dynamicHeight / 2]); 
         finalLatLng = map.unproject(offsetPoint, currentZoom);
@@ -88,10 +88,13 @@ function openPanel(item) {
         duration: 0.5,
         easeLinearity: 0.25
     });
+
+    // 4. Otomatis pemicu popup overview di atas penanda saat list diklik
+    item.marker.openPopup();
 }
 
 /* ===================================================
-   TUTUP PANEL DETAIL
+   TUTUP PANEL DETAIL (TERMASUK TUTUP POPUP)
 =================================================== */
 document.getElementById("closePanel").onclick = function() {
     if (!panelOpen) return;
@@ -99,16 +102,19 @@ document.getElementById("closePanel").onclick = function() {
     panelOpen = false;
     document.getElementById("detailPanel").classList.remove("open");
 
+    // Menutup popup aktif yang sedang terbuka di peta
+    map.closePopup();
+
     if (currentItem) {
         const currentZoom = map.getZoom();
         let finalLatLngClose = [currentItem.lat, currentItem.lng];
         
         const dynamicWidth = document.getElementById("detailPanel").offsetWidth;
 
-        // Kembalikan sumbu peta ke posisi semula saat panel desktop ditutup
+        // Kembalikan sumbu peta secara proporsional ke kiri saat panel ditutup (hanya desktop)
         if (window.innerWidth > 768) {
             const targetPoint = map.project([currentItem.lat, currentItem.lng], currentZoom);
-            const offsetPointClose = targetPoint.add([dynamicWidth / 4.0, 0]); 
+            const offsetPointClose = targetPoint.add([dynamicWidth / 2.5, 0]); 
             finalLatLngClose = map.unproject(offsetPointClose, currentZoom);
         }
 
@@ -120,9 +126,10 @@ document.getElementById("closePanel").onclick = function() {
 };
 
 /* ===================================================
-   RENDER LIST & MARKER
+   RENDER LIST & MARKER + HOVER POPUP INTERACTION
 =================================================== */
 data.forEach(item => {
+    // 1. Buat Elemen List Sidebar
     const div = document.createElement("div");
     div.className = "location";
     div.innerHTML = `<h4>${item.nama}</h4><p>📍 ${item.alamat}</p>`;
@@ -131,8 +138,45 @@ data.forEach(item => {
     
     item.element = div;
 
+    // 2. Buat Konten HTML Ringkasan Popup
+    const popupContent = `
+        <div class="map-popup-overview">
+            <div class="popup-img-inside">
+                <img src="${item.gambar}" alt="${item.nama}">
+            </div>
+            <div class="popup-text-inside">
+                <h5>${item.nama}</h5>
+                <p>📍 ${item.alamat}</p>
+            </div>
+        </div>
+    `;
+
+    // 3. Pasang Marker & Ikat fungsi Popup
     const marker = L.marker([item.lat, item.lng]).addTo(map);
-    marker.on("click", () => openPanel(item));
+    
+    marker.bindPopup(popupContent, {
+        closeButton: false,
+        offset: L.point(0, -8),
+        className: 'custom-leaflet-popup'
+    });
+
+    // Event saat mouse mendekati marker (Hover) -> Munculkan Popup
+    marker.on("mouseover", function() {
+        this.openPopup();
+    });
+
+    // Event saat mouse menjauh dari marker -> Tutup Popup
+    marker.on("mouseout", function() {
+        // Jangan tutup jika panel detail dari lokasi ini sedang aktif terbuka
+        if (currentItem !== item || !panelOpen) {
+            this.closePopup();
+        }
+    });
+
+    // Event klik tetap untuk membuka panel detail utama
+    marker.on("click", () => {
+        openPanel(item);
+    });
     
     item.marker = marker;
 });
