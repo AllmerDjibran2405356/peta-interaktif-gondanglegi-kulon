@@ -108,7 +108,7 @@ document.getElementById("closePanel").onclick = function() {
         // Kembalikan sumbu peta ke posisi semula saat panel desktop ditutup
         if (window.innerWidth > 768) {
             const targetPoint = map.project([currentItem.lat, currentItem.lng], currentZoom);
-            const offsetPointClose = targetPoint.add([dynamicWidth / 2.5, 0]); 
+            const offsetPointClose = targetPoint.add([dynamicWidth / 4.0, 0]); 
             finalLatLngClose = map.unproject(offsetPointClose, currentZoom);
         }
 
