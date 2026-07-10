@@ -1,6 +1,9 @@
+const kategoriList = ["Semua", "Pemerintahan", "Pendidikan", "Kesehatan", "Ekonomi", "Ibadah", "Wisata & Olahraga"];
+
 const data = [
     {
         nama: "Kantor Desa Gondanglegi Kulon",
+        kategori: "Pemerintahan", // Diisi kategori
         lat: -8.175027,
         lng: 112.632375,
         alamat: "Jl. Raya Desa No. 1, Gondanglegi Kulon",
@@ -9,6 +12,7 @@ const data = [
     },
     {
         nama: "Balai Pertemuan Warga",
+        kategori: "Fasilitas Umum", // Diisi kategori
         lat: -8.172,
         lng: 112.636,
         alamat: "Dusun Krajan, RT 04 / RW 02",
@@ -17,6 +21,7 @@ const data = [
     },
     {
         nama: "Lapangan Olahraga Desa",
+        kategori: "Wisata & Olahraga", // Diisi kategori
         lat: -8.178,
         lng: 112.628,
         alamat: "Dusun Kaliwenang",
@@ -138,7 +143,19 @@ document.getElementById("closePanel").onclick = function() {
 };
 
 /* ===================================================
-   RENDER LIST & MARKER + HOVER POPUP INTERACTION
+   FUNGSI WARNA MARKER (TAMBAHKAN INI)
+=================================================== */
+function getMarkerColor(kategori) {
+    switch (kategori) {
+        case "Pemerintahan": return "#3b82f6"; // Biru
+        case "Fasilitas Umum": return "#10b981"; // Hijau
+        case "Wisata & Olahraga": return "#f59e0b"; // Oranye
+        default: return "#64748b"; // Abu-abu
+    }
+}
+
+/* ===================================================
+   RENDER LIST & MARKER (GUNAKAN INI)
 =================================================== */
 data.forEach(item => {
     // 1. Buat Elemen List Sidebar
@@ -147,15 +164,23 @@ data.forEach(item => {
     div.innerHTML = `<h4>${item.nama}</h4><p>📍 ${item.alamat}</p>`;
     div.onclick = () => openPanel(item);
     list.appendChild(div);
-    
     item.element = div;
 
-    // 2. Buat Konten HTML Ringkasan Popup
+    // 2. Buat Marker Custom dengan Warna Dinamis
+    const markerColor = getMarkerColor(item.kategori);
+    const customIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div style="background-color: ${markerColor}; width: 24px; height: 24px; border-radius: 50% 50% 50% 0; border: 2px solid white; transform: rotate(-45deg); box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>`,
+        iconSize: [24, 24],
+        iconAnchor: [12, 24]
+    });
+
+    // 3. Pasang Marker & Ikat fungsi Popup
+    const marker = L.marker([item.lat, item.lng], { icon: customIcon }).addTo(map);
+    
     const popupContent = `
         <div class="map-popup-overview">
-            <div class="popup-img-inside">
-                <img src="${item.gambar}" alt="${item.nama}">
-            </div>
+            <div class="popup-img-inside"><img src="${item.gambar}" alt="${item.nama}"></div>
             <div class="popup-text-inside">
                 <h5>${item.nama}</h5>
                 <p>📍 ${item.alamat}</p>
@@ -163,38 +188,24 @@ data.forEach(item => {
         </div>
     `;
 
-    // 3. Pasang Marker & Ikat fungsi Popup
-    const marker = L.marker([item.lat, item.lng]).addTo(map);
-    
     marker.bindPopup(popupContent, {
         closeButton: false,
-        offset: L.point(0, -8),
+        offset: L.point(0, -25), // Sesuaikan offset karena icon baru
         className: 'custom-leaflet-popup'
     });
 
-    // Event saat mouse mendekati marker (Hover) -> Munculkan Popup
+    // Event Hover & Click
     marker.on("mouseover", function() {
         this.openPopup();
-        
-        // Pastikan kelas animasi penutupan dibersihkan saat popup dibuka kembali
         const entirePopup = document.querySelector(".custom-leaflet-popup");
-        if (entirePopup) {
-            entirePopup.classList.remove("popup-closing-fade");
-        }
+        if (entirePopup) entirePopup.classList.remove("popup-closing-fade");
     });
 
-    // Event saat mouse menjauh dari marker -> Tutup Popup
     marker.on("mouseout", function() {
-        // Jangan tutup jika panel detail dari lokasi ini sedang aktif terbuka
-        if (currentItem !== item || !panelOpen) {
-            this.closePopup();
-        }
+        if (currentItem !== item || !panelOpen) this.closePopup();
     });
 
-    // Event klik tetap untuk membuka panel detail utama
-    marker.on("click", () => {
-        openPanel(item);
-    });
+    marker.on("click", () => openPanel(item));
     
     item.marker = marker;
 });
@@ -223,3 +234,70 @@ document.getElementById("searchInput").onkeyup = function() {
         }
     });
 };
+
+let currentCategory = "all";
+let currentSearch = "";
+
+function filterData() {
+    data.forEach(item => {
+        const matchesSearch = item.nama.toLowerCase().includes(currentSearch) || 
+                              item.alamat.toLowerCase().includes(currentSearch);
+        const matchesCategory = currentCategory === "all" || item.kategori === currentCategory;
+
+        if (matchesSearch && matchesCategory) {
+            item.element.style.display = window.innerWidth > 768 ? "block" : "flex";
+            if (!map.hasLayer(item.marker)) map.addLayer(item.marker);
+        } else {
+            item.element.style.display = "none";
+            if (map.hasLayer(item.marker)) map.removeLayer(item.marker);
+        }
+    });
+}
+
+// Event Listener Search
+document.getElementById("searchInput").onkeyup = function() {
+    currentSearch = this.value.toLowerCase();
+    filterData();
+};
+
+// Event Listener Kategori
+document.querySelectorAll(".cat-btn").forEach(btn => {
+    btn.onclick = function() {
+        document.querySelector(".cat-btn.active").classList.remove("active");
+        this.classList.add("active");
+        
+        currentCategory = this.getAttribute("data-cat");
+        filterData();
+    };
+});
+
+/* ===================================================
+   LEGENDA DINAMIS (LEAFLET CONTROL)
+=================================================== */
+const legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = function (map) {
+    const div = L.DomUtil.create('div', 'legend-container');
+    const categories = [
+        { name: "Pemerintahan", color: "#3b82f6" },
+        { name: "Fasilitas Umum", color: "#10b981" },
+        { name: "Wisata & Olahraga", color: "#f59e0b" }
+    ];
+
+    div.innerHTML = '<strong>Legenda</strong>';
+    categories.forEach(cat => {
+        div.innerHTML += `
+            <div class="legend-item">
+                <div class="legend-dot" style="background: ${cat.color}"></div>
+                ${cat.name}
+            </div>
+        `;
+    });
+    return div;
+};
+
+legend.addTo(map);
+
+// Mencegah klik legenda agar tidak menggeser peta
+L.DomEvent.disableClickPropagation(legend.getContainer());
+
