@@ -1,34 +1,30 @@
 (function() {
   // Data lokasi
-  const data = [
-    {
-      nama: "Kantor Desa Gondanglegi Kulon",
-      kategori: "Pemerintahan",
-      lat: -8.175027,
-      lng: 112.632375,
-      alamat: "Jl. Raya Desa No. 1, Gondanglegi Kulon",
-      deskripsi: "Pusat pelayanan administrasi dan pemerintahan tingkat Desa Gondanglegi Kulon.",
-      gambar: "images/kantor-desa.jpg"
-    },
-    {
-      nama: "Balai Pertemuan Warga",
-      kategori: "Fasilitas Umum",
-      lat: -8.172,
-      lng: 112.636,
-      alamat: "Dusun Krajan, RT 04 / RW 02",
-      deskripsi: "Gedung serbaguna yang digunakan untuk musyawarah warga, posyandu, dan kegiatan kesenian.",
-      gambar: "images/balai-pertemuan.jpg"
-    },
-    {
-      nama: "Lapangan Olahraga Desa",
-      kategori: "Wisata & Olahraga",
-      lat: -8.178,
-      lng: 112.628,
-      alamat: "Dusun Kaliwenang",
-      deskripsi: "Fasilitas olahraga terbuka untuk sepak bola, voli, dan sering digunakan untuk pasar malam.",
-      gambar: "images/lapangan-desa.jpg"
-    }
-  ];
+  const data = [{
+    nama: "Kantor Desa Gondanglegi Kulon",
+    kategori: "Pemerintahan",
+    lat: -8.175027,
+    lng: 112.632375,
+    alamat: "Jl. Raya Desa No. 1, Gondanglegi Kulon",
+    deskripsi: "Pusat pelayanan administrasi dan pemerintahan tingkat Desa Gondanglegi Kulon.",
+    gambar: "https://placehold.co/600x400/3b82f6/white?text=Kantor+Desa"
+  }, {
+    nama: "Balai Pertemuan Warga",
+    kategori: "Fasilitas Umum",
+    lat: -8.172,
+    lng: 112.636,
+    alamat: "Dusun Krajan, RT 04 / RW 02",
+    deskripsi: "Gedung serbaguna yang digunakan untuk musyawarah warga, posyandu, dan kegiatan kesenian.",
+    gambar: "https://placehold.co/600x400/10b981/white?text=Balai+Pertemuan"
+  }, {
+    nama: "Lapangan Olahraga Desa",
+    kategori: "Wisata & Olahraga",
+    lat: -8.178,
+    lng: 112.628,
+    alamat: "Dusun Kaliwenang",
+    deskripsi: "Fasilitas olahraga terbuka untuk sepak bola, voli, dan sering digunakan untuk pasar malam.",
+    gambar: "https://placehold.co/600x400/f59e0b/white?text=Lapangan+Desa"
+  }];
 
   // Deteksi perangkat
   const isMobile = () => window.innerWidth <= 768;
@@ -68,7 +64,7 @@
   let isAnimating = false;
 
   // ===================================================
-  // FUNGSI MENGHITUNG OFFSET - DIPERBAIKI TANDA
+  // FUNGSI MENGHITUNG OFFSET - AKURAT DENGAN BOUNDING RECT
   // ===================================================
   function getTargetOffset() {
     const mapSize = map.getSize();
@@ -79,68 +75,40 @@
       // MOBILE: Perhitungan vertikal
       const sidebarHeight = sidebar.offsetHeight || 0;
       const panelHeight = panelOpen ? detailPanel.offsetHeight : 0;
-      
+
       const topOffset = sidebarHeight;
       const bottomOffset = panelHeight;
       const availableHeight = mapHeight - topOffset - bottomOffset;
-      
+
       const centerY = topOffset + (availableHeight * 0.5);
       const popupOffset = availableHeight * 0.15;
       const desiredY = centerY + popupOffset;
       const mapCenterY = mapHeight / 2;
-      
-      // ✅ Perbaiki tanda: offset = desiredY - mapCenterY
+
+      // ✅ PERBAIKAN: tanda yang benar
       const offsetY = desiredY - mapCenterY;
-      
+
       return { x: 0, y: offsetY };
-      
     } else {
-      // ============================================
-      // DESKTOP: Perhitungan horizontal DIPERBAIKI
-      // ============================================
-      
+      // DESKTOP: Perhitungan horizontal AKURAT
       const mapRect = mapContainer.getBoundingClientRect();
       const sidebarRect = sidebar.getBoundingClientRect();
       const panelRect = detailPanel.getBoundingClientRect();
-      
-      const sidebarWidth = sidebarRect.width;
-      let panelWidth = 0;
-      if (panelOpen) {
-        panelWidth = panelRect.width;
-      }
-      
+
       const sidebarRight = sidebarRect.right - mapRect.left;
       const panelLeft = panelOpen ? (panelRect.left - mapRect.left) : mapWidth;
-      
+
       const availableLeft = sidebarRight;
       const availableRight = mapWidth - panelLeft;
       const availableWidth = mapWidth - availableLeft - availableRight;
-      
+
       const desiredX = availableLeft + (availableWidth / 2);
       const centerX = mapWidth / 2;
-      
-      // ✅ Perbaiki tanda: offset = desiredX - centerX
+
+      // ✅ PERBAIKAN: tanda yang benar
       const offsetX = desiredX - centerX;
-      
-      console.log('📍 DESKTOP OFFSET (AKURAT):', {
-        mapWidth,
-        sidebarWidth: sidebarWidth.toFixed(0),
-        panelWidth: panelWidth.toFixed(0),
-        sidebarRight: sidebarRight.toFixed(0),
-        panelLeft: panelLeft.toFixed(0),
-        availableLeft: availableLeft.toFixed(0),
-        availableRight: availableRight.toFixed(0),
-        availableWidth: availableWidth.toFixed(0),
-        desiredX: desiredX.toFixed(0),
-        centerX: centerX.toFixed(0),
-        offsetX: offsetX.toFixed(0),
-        panelOpen
-      });
-      
-      return {
-        x: offsetX,
-        y: 0
-      };
+
+      return { x: offsetX, y: 0 };
     }
   }
 
@@ -221,7 +189,7 @@
 
     const hasSearch = currentSearch.length > 0;
     const hasCategoryFilter = currentCategory !== 'all';
-    
+
     if (hasSearch || hasCategoryFilter) {
       listContainer.classList.add('show');
     } else {
@@ -238,7 +206,7 @@
     } else {
       controlsContainer.classList.remove('panel-open');
     }
-    
+
     if (isMobile()) {
       map.scrollWheelZoom.disable();
     } else {
@@ -268,7 +236,7 @@
     div.setAttribute('tabindex', '0');
     div.setAttribute('aria-label', `Lihat detail ${item.nama}`);
     div.innerHTML = `<h4>${item.nama}</h4><p>📍 ${item.alamat}</p>`;
-    
+
     div.onclick = () => openPanel(item);
     div.onkeydown = (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -276,7 +244,7 @@
         openPanel(item);
       }
     };
-    
+
     listContainer.appendChild(div);
     item.element = div;
 
@@ -286,11 +254,11 @@
       className: 'custom-div-icon',
       html: `<div style="background-color: ${markerColor}; width: ${markerSize}px; height: ${markerSize}px; border-radius: 50% 50% 50% 0; border: 2px solid white; transform: rotate(-45deg); box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>`,
       iconSize: [markerSize, markerSize],
-      iconAnchor: [markerSize/2, markerSize],
+      iconAnchor: [markerSize / 2, markerSize],
       popupAnchor: [0, -markerSize - 4]
     });
 
-    const marker = L.marker([item.lat, item.lng], { 
+    const marker = L.marker([item.lat, item.lng], {
       icon: customIcon,
       keyboard: true,
       title: item.nama
@@ -335,25 +303,16 @@
   // FUNGSI PAN KE LOKASI
   // ===================================================
   function panToLocation(item, zoom) {
-    console.log('🎯 panToLocation - panelOpen:', panelOpen);
-    
-    // Pastikan peta sudah di-invalidate
     map.invalidateSize();
-    
-    // Tunggu sebentar agar DOM update
+
     setTimeout(() => {
-      // Hitung target dengan offset yang benar
       const targetLatLng = getTargetLatLng(item.lat, item.lng, zoom);
-      
-      console.log('🗺️ Target LatLng:', targetLatLng);
-      
-      // Gunakan flyTo untuk animasi yang smooth
+
       map.flyTo(targetLatLng, zoom, {
         duration: isMobile() ? 0.4 : 0.5,
         easeLinearity: 0.25
       });
 
-      // Buka popup setelah animasi selesai
       setTimeout(() => {
         if (item.marker) {
           item.marker.openPopup();
@@ -367,14 +326,11 @@
   // ===================================================
   function openPanel(item) {
     if (!item || isAnimating) return;
-    
+
     if (currentItem === item && panelOpen) {
-      console.log('⚠️ Same item, already open');
       return;
     }
-    
-    console.log('🚀 openPanel called for:', item.nama);
-    
+
     isAnimating = true;
     const wasAlreadyOpen = panelOpen;
     currentItem = item;
@@ -391,28 +347,19 @@
     const currentZoom = map.getZoom();
 
     if (!panelOpen) {
-      console.log('📂 Opening panel...');
       panelOpen = true;
       detailPanel.classList.add("open");
       updateControlsPosition();
-      
-      // Tunggu animasi panel selesai
+
       setTimeout(() => {
         refreshMapSize(200);
       }, 300);
     }
 
-    // Delay lebih panjang untuk desktop agar panel benar-benar terbuka
     let delay = isMobile() ? (wasAlreadyOpen ? 100 : 400) : (wasAlreadyOpen ? 100 : 500);
-    
-    console.log('⏰ Delay before pan:', delay);
-    
+
     setTimeout(() => {
-      console.log('🔄 Executing pan after delay...');
-      // Invalidate size untuk memastikan ukuran terbaru
       map.invalidateSize();
-      
-      // Pan ke lokasi
       panToLocation(item, currentZoom);
 
       setTimeout(() => {
@@ -433,13 +380,11 @@
   function closePanel() {
     if (!panelOpen) return;
 
-    console.log('❌ closePanel called');
-    
     isAnimating = true;
     panelOpen = false;
     detailPanel.classList.remove("open");
     updateControlsPosition();
-    
+
     setTimeout(() => {
       refreshMapSize(200);
     }, 400);
@@ -450,9 +395,8 @@
 
       setTimeout(() => {
         if (currentItem) {
-          console.log('🔄 Pan after close...');
           map.invalidateSize();
-          
+
           setTimeout(() => {
             const targetLatLng = getTargetLatLng(currentItem.lat, currentItem.lng, currentZoom);
             map.flyTo(targetLatLng, currentZoom, {
@@ -491,7 +435,7 @@
     if (panelOpen && !isMobile() && !isAnimating) {
       const clickedOnMarker = e.originalEvent.target.closest('.custom-div-icon');
       const clickedOnPopup = e.originalEvent.target.closest('.leaflet-popup');
-      
+
       if (!clickedOnMarker && !clickedOnPopup) {
         closePanel();
       }
@@ -501,7 +445,7 @@
   // Swipe down untuk close panel di mobile
   let touchStartY = 0;
   let touchCurrentY = 0;
-  
+
   detailPanel.addEventListener('touchstart', (e) => {
     touchStartY = e.touches[0].clientY;
     touchCurrentY = touchStartY;
@@ -513,7 +457,7 @@
 
   detailPanel.addEventListener('touchend', () => {
     const diff = touchCurrentY - touchStartY;
-    
+
     if (diff > 50 && detailPanel.scrollTop <= 5) {
       closePanel();
     }
@@ -524,8 +468,8 @@
   // ===================================================
   function filterData() {
     data.forEach(item => {
-      const matchesSearch = item.nama.toLowerCase().includes(currentSearch) || 
-                            item.alamat.toLowerCase().includes(currentSearch);
+      const matchesSearch = item.nama.toLowerCase().includes(currentSearch) ||
+        item.alamat.toLowerCase().includes(currentSearch);
       const matchesCategory = currentCategory === "all" || item.kategori === currentCategory;
 
       if (matchesSearch && matchesCategory) {
@@ -540,7 +484,7 @@
         }
       }
     });
-    
+
     updateListVisibility();
   }
 
@@ -578,7 +522,7 @@
       this.classList.add("active");
       currentCategory = this.getAttribute("data-cat");
       filterData();
-      
+
       if (isMobile()) {
         this.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
@@ -595,7 +539,7 @@
       refreshMapSize(100);
       filterData();
       updateControlsPosition();
-      
+
       if (panelOpen && currentItem) {
         const currentZoom = map.getZoom();
         setTimeout(() => {
@@ -612,7 +556,7 @@
       refreshMapSize(300);
       filterData();
       updateControlsPosition();
-      
+
       if (panelOpen && currentItem) {
         const currentZoom = map.getZoom();
         setTimeout(() => {
@@ -628,11 +572,11 @@
   // ===================================================
   filterData();
   updateControlsPosition();
-  
+
   if (isMobile()) {
     map.setView([-8.175027, 112.632375], 14.5);
   }
-  
+
   setTimeout(() => {
     refreshMapSize(100);
   }, 300);
