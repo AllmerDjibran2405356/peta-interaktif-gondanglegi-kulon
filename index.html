@@ -1,78 +1,74 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Peta Interaktif Desa</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=yes">
+  <title>Peta Interaktif Desa Gondanglegi</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-    <link rel="stylesheet" href="css/style.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-
-<div id="sidebar">
+  <div id="sidebar">
     <div id="title">
-        <span class="icon">📍</span> <span class="text">Peta Desa Gondanglegi</span>
+      <span class="icon">📍</span> <span class="text">Peta Desa Gondanglegi</span>
     </div>
 
     <div id="search">
-    <div class="search-container">
-        <input id="searchInput" placeholder="Cari lokasi atau kategori...">
-    </div>
-    <!-- Tambahan: Container Kategori -->
-    <div id="categories">
+      <div class="search-container">
+        <input id="searchInput" placeholder="Cari lokasi atau kategori..." autocomplete="off">
+      </div>
+      <div id="categories">
         <button class="cat-btn active" data-cat="all">Semua</button>
         <button class="cat-btn" data-cat="Pemerintahan">Pemerintahan</button>
         <button class="cat-btn" data-cat="Fasilitas Umum">Fasilitas Umum</button>
-        <button class="cat-btn" data-cat="Olahraga">Olahraga</button>
+        <button class="cat-btn" data-cat="Wisata & Olahraga">Wisata & Olahraga</button>
+      </div>
     </div>
-</div>
 
     <div id="list"></div>
-</div>
+  </div>
 
-<div id="mapContainer">
+  <div id="mapContainer">
     <div id="map"></div>
 
     <div id="detailPanel">
-        <button id="closePanel" title="Tutup Panel">✕</button>
-
-        <div id="detailContent">
-            <h2 id="dTitle"></h2>
-            
-            <div class="img-wrapper">
-                <img id="dImg" src="https://placehold.co/600x300?text=Lokasi" alt="Foto Lokasi">
-            </div>
-
-            <p class="info desc" id="dDesc"></p>
-
-            <div class="meta-info">
-                <p class="info">
-                    <b>Alamat</b>
-                    <span id="dAddr"></span>
-                </p>
-
-                <p class="info">
-                    <b>Koordinat</b>
-                    <span id="dCoord" class="coord-badge"></span>
-                </p>
-            </div>
-
-            <a id="dMaps" class="btn" target="_blank">
-                <span>🌐</span> Buka di Google Maps
-            </a>
+      <button id="closePanel" title="Tutup Panel">✕</button>
+      <div id="detailContent">
+        <h2 id="dTitle"></h2>
+        <div class="img-wrapper">
+          <img id="dImg" src="images/placeholder.jpg" alt="Foto Lokasi">
         </div>
+        <p class="info desc" id="dDesc"></p>
+        <div class="meta-info">
+          <p class="info">
+            <b>Alamat</b>
+            <span id="dAddr"></span>
+          </p>
+          <p class="info">
+            <b>Koordinat</b>
+            <span id="dCoord" class="coord-badge"></span>
+          </p>
+        </div>
+        <a id="dMaps" class="btn" target="_blank" rel="noopener noreferrer">
+          <span>🌐</span> Buka di Google Maps
+        </a>
+      </div>
     </div>
-</div>
+  </div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="js/script.js"></script>
-
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
+  <!-- Custom JS -->
+  <script src="js/script.js"></script>
 </body>
 </html>
