@@ -461,7 +461,7 @@ body {
 .img-wrapper {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 */
+  padding-bottom: 56.25%;
   overflow: hidden;
   border-radius: clamp(8px, 1vw, 16px);
   margin-bottom: clamp(12px, 2.5vh, 25px);
@@ -645,7 +645,7 @@ body {
 .popup-img-inside {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 */
+  padding-bottom: 56.25%;
   overflow: hidden;
   background: #f0f0f0;
 }

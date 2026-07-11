@@ -3,7 +3,9 @@
   // DATA
   // ===================================================
   let data = [];
-  const ZOOM_LABEL_THRESHOLD = 16; // Zoom level untuk menampilkan label
+  const ZOOM_LABEL_THRESHOLD = 16;
+  let geoJsonLayer = null;
+  let isInitialLoad = true;
 
   // ===================================================
   // LOAD DATA
@@ -14,11 +16,21 @@
 
     try {
       const response = await fetch('data/locations.json');
-      if (!response.ok) throw new Error('Gagal memuat data');
+      if (!response.ok) throw new Error('Gagal memuat data lokasi');
       data = await response.json();
+
+      try {
+        const geoResponse = await fetch('data/batas-desa.geojson');
+        if (geoResponse.ok) {
+          const geoData = await geoResponse.json();
+          window.batasDesa = geoData;
+        }
+      } catch (geoErr) {
+        console.warn('Gagal memuat batas desa:', geoErr);
+      }
+
     } catch (err) {
       console.error('Error loading data:', err);
-      // Fallback hardcoded
       data = [
         {
           nama: "Kantor Desa Gondanglegi Kulon",
@@ -28,24 +40,6 @@
           alamat: "Jl. Raya Desa No. 1, Gondanglegi Kulon",
           deskripsi: "Pusat pelayanan administrasi dan pemerintahan tingkat Desa Gondanglegi Kulon.",
           gambar: "https://placehold.co/600x400/3b82f6/white?text=Kantor+Desa"
-        },
-        {
-          nama: "Balai Pertemuan Warga",
-          kategori: "Fasilitas Umum",
-          lat: -8.172,
-          lng: 112.636,
-          alamat: "Dusun Krajan, RT 04 / RW 02",
-          deskripsi: "Gedung serbaguna yang digunakan untuk musyawarah warga, posyandu, dan kegiatan kesenian.",
-          gambar: "https://placehold.co/600x400/10b981/white?text=Balai+Pertemuan"
-        },
-        {
-          nama: "Lapangan Olahraga Desa",
-          kategori: "Wisata & Olahraga",
-          lat: -8.178,
-          lng: 112.628,
-          alamat: "Dusun Kaliwenang",
-          deskripsi: "Fasilitas olahraga terbuka untuk sepak bola, voli, dan sering digunakan untuk pasar malam.",
-          gambar: "https://placehold.co/600x400/f59e0b/white?text=Lapangan+Desa"
         }
       ];
     } finally {
@@ -75,10 +69,111 @@
   let resizeTimeout = null;
 
   // ===================================================
+  // WARNA MARKER
+  // ===================================================
+  function getMarkerColor(kategori) {
+    const colorMap = {
+      "Pemerintahan": "#3b82f6",
+      "Fasilitas Umum": "#10b981",
+      "Wisata & Olahraga": "#f97316",
+      "Wisata & Budaya": "#8b5cf6",
+      "Kesehatan": "#ec4899",
+      "Keagamaan": "#f59e0b",
+      "default": "#64748b"
+    };
+    return colorMap[kategori] || colorMap["default"];
+  }
+
+  // ===================================================
+  // LEGENDA
+  // ===================================================
+  function buildLegend() {
+    const categories = [...new Set(data.map(item => item.kategori))];
+    const legendContainer = document.querySelector('.legend-container');
+    if (!legendContainer) return;
+
+    let html = `<strong>Legenda</strong>`;
+    categories.forEach(cat => {
+      const color = getMarkerColor(cat);
+      html += `
+        <div class="legend-item">
+          <div class="legend-dot" style="background: ${color}"></div>
+          ${cat}
+        </div>
+      `;
+    });
+
+    if (window.batasDesa) {
+      html += `
+        <div class="legend-item">
+          <div class="legend-dot" style="background: transparent; border: 2px dashed #ef4444; width: 12px; height: 12px;"></div>
+          Batas Desa
+        </div>
+      `;
+    }
+
+    if (legendContainer.innerHTML !== html) {
+      legendContainer.innerHTML = html;
+    }
+  }
+
+  // ===================================================
+  // MUAT BATAS DESA + SET minZoom
+  // ===================================================
+  function loadGeoJSON() {
+    if (!window.batasDesa) {
+      console.warn('Data batas desa tidak tersedia');
+      return;
+    }
+
+    if (geoJsonLayer) {
+      map.removeLayer(geoJsonLayer);
+      geoJsonLayer = null;
+    }
+
+    geoJsonLayer = L.geoJSON(window.batasDesa, {
+      style: {
+        color: '#ef4444',
+        weight: 3,
+        opacity: 0.8,
+        dashArray: '6, 6',
+        fillColor: 'rgba(239, 68, 68, 0.05)',
+        fillOpacity: 0.1
+      },
+      onEachFeature: function(feature, layer) {
+        const nama = feature.properties?.nama || 'Batas Desa';
+        layer.bindPopup(`<b>${nama}</b>`);
+      }
+    }).addTo(map);
+
+    // 🔒 BATASI ZOOM OUT AGAR FOKUS KE DESA
+    const bounds = geoJsonLayer.getBounds();
+    if (bounds.isValid()) {
+      // Fit ke batas desa dengan padding
+      map.fitBounds(bounds, {
+        padding: [20, 20],
+        maxZoom: 15
+      });
+
+      // Tentukan minZoom = zoom saat ini - 1 (agar tidak zoom out terlalu jauh)
+      const currentZoom = map.getZoom();
+      const minZoom = Math.max(currentZoom - 1, 12);
+      map.setMinZoom(minZoom);
+      map.setMaxZoom(19);
+
+      // Simpan bounds untuk referensi
+      window.villageBounds = bounds;
+
+      console.log(`✅ Batas desa dimuat. minZoom: ${minZoom}, currentZoom: ${currentZoom}`);
+    }
+
+    buildLegend();
+  }
+
+  // ===================================================
   // INISIALISASI APLIKASI
   // ===================================================
   function initApp() {
-    // DOM references
     listContainer = document.getElementById("list");
     detailPanel = document.getElementById("detailPanel");
     closePanelBtn = document.getElementById("closePanel");
@@ -87,10 +182,14 @@
     mapContainer = document.getElementById("mapContainer");
     sidebar = document.getElementById("sidebar");
 
-    // Inisialisasi peta
+    // ===================================================
+    // BUAT PETA DENGAN MINZOOM DEFAULT (sementara)
+    // ===================================================
     map = L.map("map", {
       zoomControl: false,
       attributionControl: true,
+      minZoom: 12,          // default sementara, nanti di-update oleh batas desa
+      maxZoom: 19,
       dragging: true,
       touchZoom: true,
       scrollWheelZoom: !isMobile(),
@@ -176,22 +275,9 @@
 
     const legendContainer = document.createElement('div');
     legendContainer.className = 'legend-container';
-    legendContainer.innerHTML = `
-      <strong>Legenda</strong>
-      <div class="legend-item">
-        <div class="legend-dot" style="background: #3b82f6"></div>
-        Pemerintahan
-      </div>
-      <div class="legend-item">
-        <div class="legend-dot" style="background: #10b981"></div>
-        Fasilitas Umum
-      </div>
-      <div class="legend-item">
-        <div class="legend-dot" style="background: #f59e0b"></div>
-        Wisata & Olahraga
-      </div>
-    `;
     controlsContainer.appendChild(legendContainer);
+
+    buildLegend();
 
     zoomControl.querySelector('.zoom-in').addEventListener('click', (e) => {
       e.preventDefault();
@@ -207,7 +293,14 @@
     L.DomEvent.disableClickPropagation(zoomControl);
 
     // ===================================================
-    // FUNGSI UPDATE VISIBILITY
+    // MUAT BATAS DESA (setelah peta siap)
+    // ===================================================
+    setTimeout(() => {
+      loadGeoJSON();
+    }, 150);
+
+    // ===================================================
+    // FUNGSI UPDATE
     // ===================================================
     function updateListVisibility() {
       if (!isMobile()) {
@@ -236,18 +329,6 @@
       }
     }
 
-    function getMarkerColor(kategori) {
-      switch (kategori) {
-        case "Pemerintahan": return "#3b82f6";
-        case "Fasilitas Umum": return "#10b981";
-        case "Wisata & Olahraga": return "#f59e0b";
-        default: return "#64748b";
-      }
-    }
-
-    // ===================================================
-    // FUNGSI UPDATE LABEL (berdasarkan zoom)
-    // ===================================================
     function updateLabels() {
       const currentZoom = map.getZoom();
       const showLabels = currentZoom >= ZOOM_LABEL_THRESHOLD;
@@ -268,7 +349,6 @@
     // RENDER MARKERS & LIST
     // ===================================================
     data.forEach((item) => {
-      // ========== DAFTAR SISI ==========
       const div = document.createElement("div");
       div.className = "location";
       div.setAttribute('role', 'button');
@@ -287,7 +367,6 @@
       listContainer.appendChild(div);
       item.element = div;
 
-      // ========== MARKER UTAMA (DIAMOND) ==========
       const markerSize = window.innerWidth < 376 ? 20 : window.innerWidth < 601 ? 22 : 24;
       const markerColor = getMarkerColor(item.kategori);
 
@@ -305,7 +384,6 @@
         title: item.nama
       }).addTo(map);
 
-      // ========== LABEL DI BAWAH MARKER (CENTER SEMPURNA) ==========
       const labelHtml = `
         <div style="
           margin-top: ${markerSize + 4}px;
@@ -343,20 +421,17 @@
         }),
         interactive: false,
         keyboard: false,
-        zIndexOffset: 1000 // label di atas marker
+        zIndexOffset: 1000
       });
 
-      // Simpan referensi
       item.marker = marker;
       item.labelMarker = labelMarker;
 
-      // Tambahkan label ke peta hanya jika zoom memenuhi syarat
       const currentZoom = map.getZoom();
       if (currentZoom >= ZOOM_LABEL_THRESHOLD) {
         map.addLayer(labelMarker);
       }
 
-      // ========== POPUP ==========
       const popupContent = `
         <div class="map-popup-overview">
           <div class="popup-img-inside"><img src="${item.gambar}" alt="${item.nama}" loading="lazy"></div>
@@ -373,7 +448,6 @@
         className: 'custom-leaflet-popup'
       });
 
-      // ========== EVENT HANDLER ==========
       if (isTouchDevice()) {
         marker.on("click", () => openPanel(item));
       } else {
@@ -404,7 +478,6 @@
         marker.on("click", () => openPanel(item));
       }
 
-      // Bounce animasi
       marker.on("click", function() {
         const iconEl = this._icon;
         if (iconEl) {
@@ -418,14 +491,12 @@
         }
       });
 
-      // Saat marker di-remove (filter), hapus juga label
       marker.on('remove', function() {
         if (item.labelMarker && map.hasLayer(item.labelMarker)) {
           map.removeLayer(item.labelMarker);
         }
       });
 
-      // Saat marker di-add, tambahkan label jika zoom memenuhi
       marker.on('add', function() {
         const currentZoom = map.getZoom();
         if (currentZoom >= ZOOM_LABEL_THRESHOLD && item.element.style.display !== 'none') {
@@ -434,10 +505,8 @@
           }
         }
       });
-
     });
 
-    // Event zoom untuk update label
     map.on('zoomend', updateLabels);
 
     // ===================================================
@@ -480,7 +549,6 @@
       const wasAlreadyOpen = panelOpen;
       currentItem = item;
 
-      // Update konten
       document.getElementById("dTitle").textContent = item.nama;
       document.getElementById("dImg").src = item.gambar;
       document.getElementById("dImg").alt = item.nama;
@@ -491,7 +559,6 @@
 
       const currentZoom = map.getZoom();
 
-      // Buka panel jika belum terbuka
       if (!panelOpen) {
         panelOpen = true;
         closePanelBtn.setAttribute('tabindex', '0');
@@ -558,7 +625,6 @@
       currentItem = null;
     }
 
-    // Event tombol close
     closePanelBtn.addEventListener("click", (e) => {
       e.preventDefault();
       if (panelOpen) {
@@ -566,14 +632,12 @@
       }
     });
 
-    // Keyboard Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && panelOpen) {
         closePanel();
       }
     });
 
-    // Klik di luar panel (desktop)
     map.on('click', (e) => {
       if (panelOpen && !isMobile() && !isAnimating) {
         const clickedOnMarker = e.originalEvent.target.closest('.custom-div-icon');
@@ -584,7 +648,6 @@
       }
     });
 
-    // Swipe down mobile
     let touchStartY = 0;
     let touchCurrentY = 0;
     detailPanel.addEventListener('touchstart', (e) => {
@@ -625,7 +688,6 @@
         }
       });
       updateListVisibility();
-      // Update label setelah filter
       updateLabels();
     }
 
@@ -715,7 +777,7 @@
     }
     setTimeout(() => {
       refreshMapSize(100);
-      updateLabels(); // Pastikan label awal sesuai zoom
+      updateLabels();
     }, 300);
   }
 
