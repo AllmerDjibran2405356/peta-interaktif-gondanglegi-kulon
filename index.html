@@ -35,14 +35,18 @@
       </div>
     </div>
 
-    <div id="list"></div>
+    <div id="list">
+      <!-- Loading indicator -->
+      <div id="loading" style="display: none; text-align: center; padding: 20px; color: white;">
+        <span>⏳ Memuat data...</span>
+      </div>
+    </div>
   </div>
 
   <div id="mapContainer">
     <div id="map"></div>
 
     <div id="detailPanel">
-      <!-- Tombol close hanya muncul saat panel terbuka dengan data -->
       <button id="closePanel" title="Tutup Panel" tabindex="-1">✕</button>
       <div id="detailContent">
         <h2 id="dTitle"></h2>
@@ -70,9 +74,6 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Data JSON (dimuat terlebih dahulu) -->
-  <script src="data/data.json"></script>
-  
   <!-- Custom JS -->
   <script src="js/script.js"></script>
 </body>
