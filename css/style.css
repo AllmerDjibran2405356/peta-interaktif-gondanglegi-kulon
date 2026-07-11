@@ -8,7 +8,7 @@
   --text-light: #ffffff;
   --surface: #ffffff;
   --bg-global: #f8fafc;
-  --anim-bezier: cubic-bezier(0.16, 1, 0.3, 1);
+  --anim-bezier: cubic-bezier(0.22, 1, 0.36, 1);
   --panel-width-desktop: 27vw;
 }
 
@@ -17,6 +17,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -27,6 +28,7 @@ body {
   width: 100dvw;
   overflow: hidden;
   background-color: var(--bg-global);
+  touch-action: manipulation;
 }
 
 /* ===================================================
@@ -43,7 +45,9 @@ body {
   z-index: 10;
   box-shadow: 4px 0 25px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
-  transition: all 0.3s ease;
+  transition: all 0.3s var(--anim-bezier);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 #title {
@@ -89,6 +93,8 @@ body {
   transition: all 0.3s var(--anim-bezier);
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
 }
 
 #searchInput::placeholder {
@@ -110,6 +116,7 @@ body {
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
   -webkit-overflow-scrolling: touch;
   flex-shrink: 0;
+  scroll-behavior: smooth;
 }
 
 #categories::-webkit-scrollbar {
@@ -135,10 +142,12 @@ body {
   font-size: clamp(10px, 0.8vw, 13px);
   font-weight: 500;
   white-space: nowrap;
-  transition: 0.3s;
+  transition: all 0.25s var(--anim-bezier);
   flex-shrink: 0;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  will-change: transform, background, color;
+  backface-visibility: hidden;
 }
 
 .cat-btn.active,
@@ -149,7 +158,8 @@ body {
 }
 
 .cat-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.94);
+  transition-duration: 0.08s;
 }
 
 /* ===================================================
@@ -181,10 +191,12 @@ body {
   background: rgba(255, 255, 255, 0.06);
   border-radius: clamp(6px, 0.9vw, 14px);
   cursor: pointer;
-  transition: all 0.2s var(--anim-bezier);
+  transition: all 0.25s var(--anim-bezier);
   border: 1px solid rgba(255, 255, 255, 0.25);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  will-change: transform, background, color, box-shadow;
+  backface-visibility: hidden;
 }
 
 .location h4 {
@@ -198,6 +210,7 @@ body {
   font-size: clamp(10px, 0.75vw, 13px);
   color: rgba(255, 255, 255, 0.75);
   word-break: break-word;
+  transition: color 0.25s ease;
 }
 
 .location:hover {
@@ -212,8 +225,8 @@ body {
 }
 
 .location:active {
-  transform: scale(0.98);
-  transition: transform 0.1s;
+  transform: scale(0.97);
+  transition-duration: 0.08s;
 }
 
 /* ===================================================
@@ -246,8 +259,10 @@ body {
   align-items: flex-end;
   gap: clamp(6px, 1vw, 12px);
   z-index: 1000;
-  transition: right 0.5s var(--anim-bezier);
+  transition: right 0.6s var(--anim-bezier);
   pointer-events: none;
+  will-change: right;
+  backface-visibility: hidden;
 }
 
 .custom-controls-container > * {
@@ -275,10 +290,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: background 0.15s ease, transform 0.1s ease;
   user-select: none;
   line-height: 1;
   -webkit-tap-highlight-color: transparent;
+  will-change: transform, background;
+  backface-visibility: hidden;
 }
 
 .zoom-btn:hover {
@@ -287,7 +304,7 @@ body {
 
 .zoom-btn:active {
   background: #e0e0e0;
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
 
 .zoom-btn.zoom-in {
@@ -310,6 +327,8 @@ body {
   line-height: 1.5;
   flex-shrink: 0;
   max-width: 200px;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .legend-container strong {
@@ -336,6 +355,11 @@ body {
   height: clamp(10px, 0.8vw, 14px);
   border-radius: 50%;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.legend-item:hover .legend-dot {
+  transform: scale(1.2);
 }
 
 /* ===================================================
@@ -350,17 +374,18 @@ body {
   max-width: 500px;
   height: 100%;
   background: var(--surface);
-  transform: translateX(100%);
-  transition: transform 0.5s var(--anim-bezier);
+  transform: translateX(100%) translateZ(0);
+  transition: transform 0.55s var(--anim-bezier);
   box-shadow: -10px 0 40px rgba(0, 0, 0, 0.12);
   z-index: 9999;
   display: flex;
   flex-direction: column;
   will-change: transform;
+  backface-visibility: hidden;
 }
 
 #detailPanel.open {
-  transform: translateX(0);
+  transform: translateX(0) translateZ(0);
 }
 
 #detailContent {
@@ -396,11 +421,13 @@ body {
   cursor: pointer;
   font-size: clamp(11px, 0.8vw, 16px);
   z-index: 10;
-  transition: all 0.2s;
+  transition: all 0.3s var(--anim-bezier);
   display: flex;
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
+  will-change: transform, background;
+  backface-visibility: hidden;
 }
 
 #closePanel:hover {
@@ -409,7 +436,7 @@ body {
 }
 
 #closePanel:active {
-  transform: rotate(90deg) scale(0.9);
+  transform: rotate(90deg) scale(0.88);
 }
 
 #dTitle {
@@ -420,6 +447,14 @@ body {
   padding-right: 15%;
   margin-bottom: clamp(12px, 2.5vh, 25px);
   word-break: break-word;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.4s var(--anim-bezier) 0.1s;
+}
+
+#detailPanel.open #dTitle {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ===== 16:9 RATIO UNTUK SEMUA GAMBAR ===== */
@@ -430,8 +465,18 @@ body {
   overflow: hidden;
   border-radius: clamp(8px, 1vw, 16px);
   margin-bottom: clamp(12px, 2.5vh, 25px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   background: #f0f0f0;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: all 0.5s var(--anim-bezier) 0.15s;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+#detailPanel.open .img-wrapper {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .img-wrapper #dImg {
@@ -442,11 +487,13 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s var(--anim-bezier);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .img-wrapper:hover #dImg {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 .info.desc {
@@ -458,6 +505,14 @@ body {
   padding: clamp(10px, 2vh, 20px) clamp(12px, 5%, 20px);
   border-radius: clamp(6px, 0.8vw, 12px);
   word-break: break-word;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s var(--anim-bezier) 0.2s;
+}
+
+#detailPanel.open .info.desc {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .meta-info {
@@ -471,6 +526,22 @@ body {
   display: flex;
   flex-direction: column;
   gap: clamp(2px, 0.5vh, 6px);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.4s var(--anim-bezier);
+}
+
+.meta-info .info:first-child {
+  transition-delay: 0.25s;
+}
+
+.meta-info .info:last-child {
+  transition-delay: 0.3s;
+}
+
+#detailPanel.open .meta-info .info {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .meta-info b {
@@ -515,6 +586,16 @@ body {
   transition: all 0.3s var(--anim-bezier);
   box-shadow: 0 4px 12px rgba(11, 115, 200, 0.25);
   -webkit-tap-highlight-color: transparent;
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  transition: all 0.4s var(--anim-bezier) 0.35s;
+  will-change: transform, opacity, box-shadow;
+  backface-visibility: hidden;
+}
+
+#detailPanel.open .btn {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .btn:hover {
@@ -524,11 +605,11 @@ body {
 }
 
 .btn:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 /* ===================================================
-   CUSTOM POPUP
+   CUSTOM POPUP - ANIMASI HALUS
 =================================================== */
 .custom-leaflet-popup .leaflet-popup-content-wrapper {
   background: var(--surface);
@@ -538,6 +619,20 @@ body {
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   border: 1px solid rgba(0, 0, 0, 0.05);
+  animation: popupFadeIn 0.25s var(--anim-bezier);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+@keyframes popupFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .custom-leaflet-popup .leaflet-popup-content {
@@ -547,7 +642,6 @@ body {
   flex-direction: column;
 }
 
-/* Popup gambar juga 16:9 */
 .popup-img-inside {
   position: relative;
   width: 100%;
@@ -563,6 +657,13 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.popup-img-inside:hover img {
+  transform: scale(1.05);
 }
 
 .popup-text-inside {
@@ -589,7 +690,7 @@ body {
 
 .custom-leaflet-popup .leaflet-popup-tip {
   background: var(--surface);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* ===================================================
@@ -714,7 +815,7 @@ body {
     overflow: hidden;
     padding: 0 4%;
     gap: 8px;
-    transition: all 0.3s ease;
+    transition: all 0.3s var(--anim-bezier);
   }
 
   #list.show {
@@ -756,13 +857,14 @@ body {
     max-height: 30vh;
     top: auto;
     bottom: 0;
-    transform: translateY(100%);
+    transform: translateY(100%) translateZ(0);
     border-radius: 16px 16px 0 0;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.5s var(--anim-bezier);
   }
 
   #detailPanel.open {
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
 
   #detailContent {
@@ -781,6 +883,17 @@ body {
     font-size: 14px;
   }
 
+  /* Animasi mobile - lebih sederhana untuk performa */
+  #dTitle,
+  .img-wrapper,
+  .info.desc,
+  .meta-info .info,
+  .btn {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
   #dTitle {
     font-size: clamp(14px, 4vw, 18px);
     margin-bottom: 8px;
@@ -788,7 +901,7 @@ body {
   }
 
   .img-wrapper {
-    padding-bottom: 56.25%; /* Tetap 16:9 */
+    padding-bottom: 56.25%;
     height: auto !important;
     border-radius: 8px;
     margin-bottom: 8px;

@@ -1,0 +1,83 @@
+[
+  {
+    "nama": "Kantor Desa Gondanglegi Kulon",
+    "kategori": "Pemerintahan",
+    "lat": -8.175027,
+    "lng": 112.632375,
+    "alamat": "Jl. Raya Desa No. 1, Gondanglegi Kulon",
+    "deskripsi": "Pusat pelayanan administrasi dan pemerintahan tingkat Desa Gondanglegi Kulon.",
+    "gambar": "https://placehold.co/600x400/3b82f6/white?text=Kantor+Desa"
+  },
+  {
+    "nama": "Balai Pertemuan Warga",
+    "kategori": "Fasilitas Umum",
+    "lat": -8.172,
+    "lng": 112.636,
+    "alamat": "Dusun Krajan, RT 04 / RW 02",
+    "deskripsi": "Gedung serbaguna yang digunakan untuk musyawarah warga, posyandu, dan kegiatan kesenian.",
+    "gambar": "https://placehold.co/600x400/10b981/white?text=Balai+Pertemuan"
+  },
+  {
+    "nama": "Lapangan Olahraga Desa",
+    "kategori": "Wisata & Olahraga",
+    "lat": -8.178,
+    "lng": 112.628,
+    "alamat": "Dusun Kaliwenang",
+    "deskripsi": "Fasilitas olahraga terbuka untuk sepak bola, voli, dan sering digunakan untuk pasar malam.",
+    "gambar": "https://placehold.co/600x400/f59e0b/white?text=Lapangan+Desa"
+  },
+  {
+    "nama": "SPBU Pertamina",
+    "kategori": "Fasilitas Umum",
+    "lat": -8.172,
+    "lng": 112.639,
+    "alamat": "Gondanglegi Kulon, Kec. Gondanglegi",
+    "deskripsi": "Stasiun Pengisian Bahan Bakar Umum yang melayani kebutuhan bahan bakar warga dan pengendara yang melintas.",
+    "gambar": "https://placehold.co/600x400/dc2626/white?text=SPBU"
+  },
+  {
+    "nama": "Puskesmas Gondanglegi",
+    "kategori": "Kesehatan",
+    "lat": -8.17540,
+    "lng": 112.63462,
+    "alamat": "Gondanglegi Kulon, Kec. Gondanglegi",
+    "deskripsi": "Pusat Kesehatan Masyarakat yang memberikan pelayanan kesehatan dasar bagi warga sekitar.",
+    "gambar": "https://placehold.co/600x400/0ea5e9/white?text=Puskesmas"
+  },
+  {
+    "nama": "Kantor Kecamatan Gondanglegi",
+    "kategori": "Pemerintahan",
+    "lat": -8.17565,
+    "lng": 112.63604,
+    "alamat": "Gondanglegi Kulon, Kec. Gondanglegi",
+    "deskripsi": "Pusat pelayanan administrasi dan pemerintahan tingkat Kecamatan Gondanglegi.",
+    "gambar": "https://placehold.co/600x400/3b82f6/white?text=Kantor+Kecamatan"
+  },
+  {
+    "nama": "Kantor Desa Gondanglegi Kulon",
+    "kategori": "Pemerintahan",
+    "lat": -8.17503,
+    "lng": 112.63238,
+    "alamat": "Gondanglegi Kulon, Kec. Gondanglegi",
+    "deskripsi": "Pusat pelayanan administrasi dan pemerintahan tingkat Desa Gondanglegi Kulon.",
+    "gambar": "https://placehold.co/600x400/3b82f6/white?text=Kantor+Desa"
+  },
+  {
+    "nama": "Masjid Besar Gondanglegi",
+    "kategori": "Keagamaan",
+    "lat": -8.17646,
+    "lng": 112.63583,
+    "alamat": "Gondanglegi Kulon, Kec. Gondanglegi",
+    "deskripsi": "Tempat ibadah utama yang menjadi pusat kegiatan keagamaan masyarakat Gondanglegi.",
+    "gambar": "https://placehold.co/600x400/8b5cf6/white?text=Masjid+Besar"
+  },
+  {
+    "nama": "Gentong Kuning",
+    "kategori": "Wisata & Budaya",
+    "lat": -8.17544,
+    "lng": 112.63124,
+    "alamat": "Gondanglegi Kulon, Kec. Gondanglegi",
+    "deskripsi": "Ikon atau situs lokal yang berada di wilayah Desa Gondanglegi Kulon.",
+    "gambar": "https://placehold.co/600x400/eab308/white?text=Gentong+Kuning"
+  }
+]

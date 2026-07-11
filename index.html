@@ -42,7 +42,8 @@
     <div id="map"></div>
 
     <div id="detailPanel">
-      <button id="closePanel" title="Tutup Panel">✕</button>
+      <!-- Tombol close hanya muncul saat panel terbuka dengan data -->
+      <button id="closePanel" title="Tutup Panel" tabindex="-1">✕</button>
       <div id="detailContent">
         <h2 id="dTitle"></h2>
         <div class="img-wrapper">
@@ -69,6 +70,9 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+  <!-- Data JSON (dimuat terlebih dahulu) -->
+  <script src="data/data.json"></script>
+  
   <!-- Custom JS -->
   <script src="js/script.js"></script>
 </body>
