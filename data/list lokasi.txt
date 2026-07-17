@@ -1,0 +1,60 @@
+Berikut daftar **nama lokasi dan kategori** yang sudah saya ekstrak dari data JSON Anda.  
+Formatnya rapi dan mudah dibaca—cocok untuk dikirim ke rekan yang tidak berkecimpung di kode.
+
+---
+
+## 📋 Daftar Lokasi Desa Gondanglegi Kulon
+
+**Total:** 28 titik
+
+---
+
+### 🏛️ Pemerintahan (4)
+1. Kantor Kecamatan Gondanglegi  
+2. Kantor Desa Gondanglegi Kulon  
+3. Dinas Pengairan UP PSDA Gondanglegi  
+4. UPT Dishub Gondanglegi Kabupaten Malang  
+
+---
+
+### 🏥 Kesehatan (2)
+5. Puskesmas Gondanglegi  
+6. Rumah Sakit Islam Gondanglegi  
+
+---
+
+### 🛡️ Keamanan (2)
+7. Polsek Gondanglegi  
+8. Pos Lantas Gondanglegi  
+
+---
+
+### 🎓 Pendidikan (14)
+9. SMK Islam Gondanglegi  
+10. YPI AL BAROKAH GONDANGLEGI  
+11. PPEM SMK MUTU GONDANGLEGI  
+12. Pondok Pesantren Miftahul Ulum Attohirin  
+13. Masdrasah Aliyah NU Gondanglegi  
+14. TK SDIT Al rahbini  
+15. SMP Al Rahbini Islamic Boarding School  
+16. TKIT Al Rahbini Gondanglegi Malang  
+17. Taman Kanak-Kanak Plus "Wahidiyah"  
+18. SD WAHIDIYAH GONDANGLEGI  
+19. SMK NU GONDANGLEGI  
+20. TPQ KS Al-Hidayah  
+21. Pesantren Entrepreneur Muhammadiyah Gondanglegi Malang  
+22. PAUD Al Ilyas  
+
+---
+
+### 🕌 Keagamaan (6)
+23. Masjid Besar Gondanglegi  
+24. IKADI Kabupaten Malang  
+25. Masjid jami' AL-ILYAS  
+26. Masjid jami' Nurul Hidayah  
+27. Masjid Al-furqon  
+28. Masjid Adz Dzikro  
+
+---
+
+Jika Anda ingin format lain (misal: tabel CSV, daftar per nomor saja, atau urutan abjad), beri tahu saya. Saya siap bantu.

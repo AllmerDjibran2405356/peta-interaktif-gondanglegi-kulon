@@ -17,8 +17,28 @@
     try {
       const response = await fetch('data/locations.json');
       if (!response.ok) throw new Error('Gagal memuat data lokasi');
-      data = await response.json();
+      const rawData = await response.json();
 
+      // Filter objek komentar (yang memiliki "_Comment") dan bersihkan data
+      data = rawData
+        .filter(item => !item._Comment) // abaikan komentar
+        .map(item => {
+          // Perbaiki properti: jika ada "ing" gunakan sebagai lng
+          const lng = item.lng || item.ing || 0;
+          // Ganti nilai "null" (string) dengan nilai default
+          const alamat = (item.alamat && item.alamat !== 'null') ? item.alamat : 'Alamat tidak tersedia';
+          const deskripsi = (item.deskripsi && item.deskripsi !== 'null') ? item.deskripsi : 'Deskripsi tidak tersedia';
+          const gambar = (item.gambar && item.gambar !== 'null') ? item.gambar : 'https://placehold.co/600x400/64748b/white?text=No+Image';
+          return {
+            ...item,
+            lng: lng,
+            alamat: alamat,
+            deskripsi: deskripsi,
+            gambar: gambar
+          };
+        });
+
+      // Muat batas desa jika ada
       try {
         const geoResponse = await fetch('data/batas-desa.geojson');
         if (geoResponse.ok) {
@@ -31,6 +51,7 @@
 
     } catch (err) {
       console.error('Error loading data:', err);
+      // Data fallback jika gagal
       data = [
         {
           nama: "Kantor Desa Gondanglegi Kulon",
@@ -69,7 +90,7 @@
   let resizeTimeout = null;
 
   // ===================================================
-  // WARNA MARKER
+  // WARNA MARKER (semua kategori yang Anda minta sudah ada)
   // ===================================================
   function getMarkerColor(kategori) {
     const colorMap = {
@@ -79,6 +100,11 @@
       "Wisata & Budaya": "#8b5cf6",
       "Kesehatan": "#ec4899",
       "Keagamaan": "#f59e0b",
+      "Pendidikan": "#06b6d4",
+      "Ekonomi": "#facc15",
+      "Sosial & Umum": "#a3a3a3",
+      "Keamanan": "#ef4444",
+      "Bencana": "#dc2626",
       "default": "#64748b"
     };
     return colorMap[kategori] || colorMap["default"];
@@ -88,12 +114,28 @@
   // LEGENDA
   // ===================================================
   function buildLegend() {
-    const categories = [...new Set(data.map(item => item.kategori))];
+    // Daftar lengkap kategori sesuai tombol (tanpa "default")
+    const allCategories = [
+      "Pemerintahan",
+      "Fasilitas Umum",
+      "Wisata & Olahraga",
+      "Wisata & Budaya",
+      "Kesehatan",
+      "Keagamaan",
+      "Pendidikan",
+      "Ekonomi",
+      "Sosial & Umum",
+      "Keamanan",
+      "Bencana",
+      "Lain-lain"
+    ];
+
     const legendContainer = document.querySelector('.legend-container');
     if (!legendContainer) return;
 
     let html = `<strong>Legenda</strong>`;
-    categories.forEach(cat => {
+
+    allCategories.forEach(cat => {
       const color = getMarkerColor(cat);
       html += `
         <div class="legend-item">
@@ -103,6 +145,7 @@
       `;
     });
 
+    // Tambahkan batas desa jika ada
     if (window.batasDesa) {
       html += `
         <div class="legend-item">
@@ -112,9 +155,7 @@
       `;
     }
 
-    if (legendContainer.innerHTML !== html) {
-      legendContainer.innerHTML = html;
-    }
+    legendContainer.innerHTML = html;
   }
 
   // ===================================================
@@ -146,24 +187,17 @@
       }
     }).addTo(map);
 
-    // 🔒 BATASI ZOOM OUT AGAR FOKUS KE DESA
     const bounds = geoJsonLayer.getBounds();
     if (bounds.isValid()) {
-      // Fit ke batas desa dengan padding
       map.fitBounds(bounds, {
         padding: [20, 20],
         maxZoom: 15
       });
-
-      // Tentukan minZoom = zoom saat ini - 1 (agar tidak zoom out terlalu jauh)
       const currentZoom = map.getZoom();
       const minZoom = Math.max(currentZoom - 1, 12);
       map.setMinZoom(minZoom);
       map.setMaxZoom(19);
-
-      // Simpan bounds untuk referensi
       window.villageBounds = bounds;
-
       console.log(`✅ Batas desa dimuat. minZoom: ${minZoom}, currentZoom: ${currentZoom}`);
     }
 
@@ -183,12 +217,12 @@
     sidebar = document.getElementById("sidebar");
 
     // ===================================================
-    // BUAT PETA DENGAN MINZOOM DEFAULT (sementara)
+    // BUAT PETA
     // ===================================================
     map = L.map("map", {
       zoomControl: false,
       attributionControl: true,
-      minZoom: 12,          // default sementara, nanti di-update oleh batas desa
+      minZoom: 12,
       maxZoom: 19,
       dragging: true,
       touchZoom: true,
@@ -293,7 +327,7 @@
     L.DomEvent.disableClickPropagation(zoomControl);
 
     // ===================================================
-    // MUAT BATAS DESA (setelah peta siap)
+    // MUAT BATAS DESA
     // ===================================================
     setTimeout(() => {
       loadGeoJSON();

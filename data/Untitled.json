@@ -76,6 +76,15 @@
     },
     {"_Comment" : "======================================================================PENDIDIKAN======================================================================"},
     {
+    "nama"      : "SMK Muhammadiyah 7 Gondanglegi Kampus 1",
+    "kategori"  : "Pendidikan",
+    "lat"       : -8.17203775261281,
+    "lng"       : 112.64461182710149,
+    "alamat"    : "null",
+    "deskripsi" : "null",
+    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
+    },
+    {
     "nama"      : "SMK Islam Gondanglegi",
     "kategori"  : "Pendidikan",
     "lat"       : -8.174756812571827,
@@ -102,111 +111,21 @@
     "deskripsi" : "null",
     "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
     },
-    {
-    "nama"      : "Pondok Pesantren Miftahul Ulum Attohirin",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.169062639223574,
-    "lng"       : 112.61906277742658,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "Masdrasah Aliyah NU Gondanglegi",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.177731311466234,
-    "lng"       : 112.6359260448845,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "TK SDIT Al rahbini",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.173039794320156,
-    "lng"       : 112.63545933386561,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "SMP Al Rahbini Islamic Boardlng School",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.172897586084519,
-    "lng"       : 112.63557615189009,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "TKIT Al Rahbini Gondanglegi Malang",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.17283917679872,
-    "lng"       : 112.63587790038922,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "Taman Kanak-Kanak Plus \"Wahidiyah\"",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.171766133843018,
-    "lng"       : 112.63750375302811,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "SD WAHIDIYAH GONDANGLEGI",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.171567010674744,
-    "lng"       : 112.63796777518478,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "SMK NU GONDANGLEGI",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.1713633414023,
-    "lng"       : 112.6393670459925,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "TPQ KS Al-Hidayah",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.171949151185235,
-    "lng"       : 112.63865011966392,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "Pesantren Entrepreneur Muhammadiyah Gondanglegi Malang",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.169881898267866,
-    "lng"       : 112.63919251280899,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "PAUD Al Ilyas",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.168921464798764,
-    "lng"       : 112.61638326881412,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
     {"_Comment" : "======================================================================KEAGAMAAN======================================================================"},
     {
     "nama"      : "Masjid Besar Gondanglegi",
     "kategori"  : "Keagamaan",
     "lat"       : -8.176197476498222,
     "lng"       : 112.63730434059501,
+    "alamat"    : "null",
+    "deskripsi" : "null",
+    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
+    },
+    {
+    "nama"      : "Masjid Jami' Gondanglegi",
+    "kategori"  : "Keagamaan",
+    "lat"       : -8.17611241490259,
+    "lng"       : 112.63737800011458,
     "alamat"    : "null",
     "deskripsi" : "null",
     "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
@@ -230,30 +149,12 @@
     "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
     },
     {
-    "nama"      : "Masjid jami' Nurul Hidayah",
+    "nama"      : "Madin AL-musaddadiyah",
     "kategori"  : "Keagamaan",
-    "lat"       : -8.166746778344498,
-    "lng"       : 112.61402389732712,
+    "lat"       : -8.188526702921093,
+    "lng"       : 112.63581093004493,
     "alamat"    : "null",
     "deskripsi" : "null",
     "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "Masjid Al-furqon",
-    "kategori"  : "Keagamaan",
-    "lat"       : -8.1709594409412,
-    "lng"       : 112.62223338729675,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "Masjid Adz Dzikro",
-    "kategori"  : "Keagamaan",
-    "lat"       : -8.16869047346798,
-    "lng"       : 112.63857212200742,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    }   
+    }
 ]

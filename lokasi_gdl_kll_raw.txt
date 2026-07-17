@@ -1,0 +1,46 @@
+MVP
+Pemerintahan
+1. Kantor Kecamatan Gondanglegi (-8.17622623250669, 112.63566388292371)
+2. Kantor Desa Gondanglegi Kulon Kec. Gondanglegi Kab. Malang (-8.174636933273657, 112.63227178292382)
+3. Dinas Pengairan UP PSDA Gondanglegi (-8.182661905573164, 112.62985269822795)
+4. UPT dishub gondanglegi kabupaten malang (-8.179384535245541, 112.6322370355035)
+
+Kesehatan
+1. Puskesmas Gondanglegi (-8.175565903384607, 112.6341127327979)
+2. Rumah Sakit Islam Gondanglegi (-8.169989732348295, 112.64015078444058)
+3. Posyandu Balita "Bougenville" (-8.16357523276788, 112.60852217575835)
+
+Keamanan
+1. Polsek Gondanglegi (-8.176840873265903, 112.64055328292396)
+2. Pos Lantas Gondanglegi (-8.175612920187257, 112.63374950308945)
+
+Pendidikan
+1. SMK Muhammadiyah 7 Gondanglegi Kampus 1 (-8.17203775261281, 112.64461182710149)
+2. SMK Islam Gondanglegi (-8.174756812571827, 112.6331189964172)
+3. YPI AL BAROKAH GONDANGLEGI (-8.1763855534189, 112.62191409641738)
+4. PPEM SMK MUTU GONDANGLEGI (-8.170333292491232, 112.6393326424435)
+
+Keagamaan
+1. Masjid Besar Gondanglegi (-8.176197476498222, 112.63730434059501)
+2. Masjid Jami' Gondanglegi (-8.17611241490259, 112.63737800011458)
+3. IKADI Kabupaten Malang (-8.170768513309094, 112.62513932340407)
+4. Masjid jami' AL-ILYAS (-8.168759772097477, 112.61622453689752)
+5. Madin AL-musaddadiyah (-8.188526702921093, 112.63581093004493)
+
+Pending
+Fasilitas Umum
+
+
+Wisata & Olahraga
+
+
+Wisata & Budaya
+
+
+Ekonomi
+
+
+Sosial & Umum
+
+
+Bencana
