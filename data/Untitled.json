@@ -76,15 +76,6 @@
     },
     {"_Comment" : "======================================================================PENDIDIKAN======================================================================"},
     {
-    "nama"      : "SMK Muhammadiyah 7 Gondanglegi Kampus 1",
-    "kategori"  : "Pendidikan",
-    "lat"       : -8.17203775261281,
-    "lng"       : 112.64461182710149,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
     "nama"      : "SMK Islam Gondanglegi",
     "kategori"  : "Pendidikan",
     "lat"       : -8.174756812571827,
@@ -149,10 +140,10 @@
     "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
     },
     {
-    "nama"      : "Madin AL-musaddadiyah",
+    "nama"      : "Masjid jami' Nurul Hidayah",
     "kategori"  : "Keagamaan",
-    "lat"       : -8.188526702921093,
-    "lng"       : 112.63581093004493,
+    "lat"       : -8.166746778344498,
+    "ing"       : 112.61402389732712,
     "alamat"    : "null",
     "deskripsi" : "null",
     "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"

@@ -19,19 +19,10 @@
     "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
     },
     {
-    "nama"      : "Dinas Pengairan UP PSDA Gondanglegi",
+    "nama"      : "KUA Kecamatan Gondanglegi",
     "kategori"  : "Pemerintahan",
-    "lat"       : -8.182661905573164,
-    "lng"       : 112.62985269822795,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "UPT Dishub Gondanglegi Kabupaten Malang",
-    "kategori"  : "Pemerintahan",
-    "lat"       : -8.179384535245541,
-    "lng"       : 112.6322370355035,
+    "lat"       : -8.171938523751956,
+    "lng"       : 112.6253242487569,
     "alamat"    : "null",
     "deskripsi" : "null",
     "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
@@ -212,15 +203,6 @@
     "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
     },
     {
-    "nama"      : "IKADI Kabupaten Malang",
-    "kategori"  : "Keagamaan",
-    "lat"       : -8.170768513309094,
-    "lng"       : 112.62513932340407,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
     "nama"      : "Masjid jami' AL-ILYAS",
     "kategori"  : "Keagamaan",
     "lat"       : -8.168759772097477,
@@ -243,15 +225,6 @@
     "kategori"  : "Keagamaan",
     "lat"       : -8.1709594409412,
     "lng"       : 112.62223338729675,
-    "alamat"    : "null",
-    "deskripsi" : "null",
-    "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"
-    },
-    {
-    "nama"      : "Masjid Adz Dzikro",
-    "kategori"  : "Keagamaan",
-    "lat"       : -8.16869047346798,
-    "lng"       : 112.63857212200742,
     "alamat"    : "null",
     "deskripsi" : "null",
     "gambar"    : "https://placehold.co/600x400/3b82f6/white?text=null"

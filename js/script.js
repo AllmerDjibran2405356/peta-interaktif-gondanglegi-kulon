@@ -5,6 +5,7 @@
   let data = [];
   const ZOOM_LABEL_THRESHOLD = 16;
   let geoJsonLayer = null;
+  let dusunLayer = null;
   let isInitialLoad = true;
 
   // ===================================================
@@ -47,6 +48,17 @@
         }
       } catch (geoErr) {
         console.warn('Gagal memuat batas desa:', geoErr);
+      }
+
+      // Muat batas dusun jika ada
+      try {
+        const dusunResponse = await fetch('data/batas-dusun.geojson');
+        if (dusunResponse.ok) {
+          const dusunData = await dusunResponse.json();
+          window.batasDusun = dusunData;
+        }
+      } catch (dusunErr) {
+        console.warn('Gagal memuat batas dusun:', dusunErr);
       }
 
     } catch (err) {
@@ -155,6 +167,16 @@
       `;
     }
 
+    // Batas dusun (garis hitam solid)
+    if (window.batasDusun) {
+      html += `
+        <div class="legend-item">
+          <div class="legend-dot" style="background: transparent; border: 2px solid #000000; width: 12px; height: 12px;"></div>
+          Batas Dusun
+        </div>
+      `;
+    }
+
     legendContainer.innerHTML = html;
   }
 
@@ -201,6 +223,37 @@
       console.log(`✅ Batas desa dimuat. minZoom: ${minZoom}, currentZoom: ${currentZoom}`);
     }
 
+    loadDusunLayer(); 
+
+    buildLegend();
+  }
+
+  function loadDusunLayer() {
+    if (!window.batasDusun) {
+      console.warn('Data batas dusun tidak tersedia');
+      return;
+    }
+
+    if (dusunLayer) {
+      map.removeLayer(dusunLayer);
+      dusunLayer = null;
+    }
+
+    dusunLayer = L.geoJSON(window.batasDusun, {
+      style: {
+        color: '#000000',      // hitam
+        weight: 3,
+        opacity: 0.9,
+        dashArray: null,       // garis solid
+        fill: false
+      },
+      onEachFeature: function(feature, layer) {
+        const nama = feature.properties?.name || 'Batas Dusun';
+        layer.bindPopup(`<b>${nama}</b>`);
+      }
+    }).addTo(map);
+
+    // Perbarui legenda agar muncul item batas dusun
     buildLegend();
   }
 
